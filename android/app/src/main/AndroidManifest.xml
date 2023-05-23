@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.drenquiry.dr_enquiry">
-   <application
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <application
         android:label="dr_enquiry"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

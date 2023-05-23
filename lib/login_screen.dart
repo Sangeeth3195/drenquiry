@@ -3,6 +3,7 @@ import 'package:dr_enquiry/TextFieldExample.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -14,8 +15,11 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
 
+  late SharedPreferences _preferences;
 
   Future<void> _login() async {
+    _preferences = await SharedPreferences.getInstance();
+
     setState(() {
       _isLoading = true;
     });
@@ -34,6 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
       print(response.body);
 
       if (response.statusCode == 200) {
+        var data=json.decode(response.body);
+        _preferences.setInt('id',data['result']['id'] );
         // Login successful, navigate to next screen
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TextFieldExample()));
       } else {
@@ -53,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (error) {
+      print(error.toString());
       showDialog(
         context: context,
         builder: (context) => AlertDialog(

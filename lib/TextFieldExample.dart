@@ -6,16 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class TextFieldExample extends StatefulWidget {
+  const TextFieldExample({super.key});
+
   @override
   _TextFieldExampleState createState() => _TextFieldExampleState();
 }
 
 class _TextFieldExampleState extends State<TextFieldExample> {
-  TextEditingController _controller1 = TextEditingController();
-  TextEditingController _controller2 = TextEditingController();
-  TextEditingController _controller3 = TextEditingController();
-  TextEditingController _controller4 = TextEditingController();
-  TextEditingController _controller5 = TextEditingController();
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
+  final TextEditingController _controller3 = TextEditingController();
+  final TextEditingController _controller4 = TextEditingController();
+  final TextEditingController _controller5 = TextEditingController();
   late SharedPreferences _preferences;
   String? _currentAddress;
   Position? _currentPosition;
@@ -160,36 +162,36 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('TextFields Example')),
+      appBar: AppBar(title: const Text('TextFields Example')),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextFormField(
               controller: _controller1,
-              decoration: InputDecoration(labelText: 'Text Field 1'),
+              decoration: const InputDecoration(labelText: 'Text Field 1'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextFormField(
               controller: _controller2,
-              decoration: InputDecoration(labelText: 'Text Field 2'),
+              decoration: const InputDecoration(labelText: 'Text Field 2'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextFormField(
               controller: _controller3,
-              decoration: InputDecoration(labelText: 'Text Field 3'),
+              decoration: const InputDecoration(labelText: 'Text Field 3'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextFormField(
               controller: _controller4,
-              decoration: InputDecoration(labelText: 'Text Field 4'),
+              decoration: const InputDecoration(labelText: 'Text Field 4'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextFormField(
               controller: _controller5,
-              decoration: InputDecoration(labelText: 'Text Field 5'),
+              decoration: const InputDecoration(labelText: 'Text Field 5'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 _sendDetails();
@@ -202,7 +204,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 // Clear the text fields
                 _controller1.clear();
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         ),

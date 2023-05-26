@@ -160,7 +160,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('TextFields Example')),
+      // appBar: AppBar(title: const Text('TextFields Example')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

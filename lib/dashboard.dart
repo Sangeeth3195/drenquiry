@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:dr_enquiry/UserListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import 'TextFieldExample.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -205,24 +208,10 @@ class TabContent {
 List<TabContent> tabContent = [
   TabContent(
     title: 'Add Visit',
-    content: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text('Add Visit'),
-        ],
-      ),
-    ),
+    content: TextFieldExample(),
   ),
   TabContent(
     title: 'Visit Details',
-    content: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text('Visit Details'),
-        ],
-      ),
-    ),
+    content: UserListScreen(),
   )
 ];

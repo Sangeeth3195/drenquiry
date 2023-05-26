@@ -5,14 +5,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class TextFieldExample extends StatefulWidget {
-  const TextFieldExample({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
 
   @override
   _TextFieldExampleState createState() => _TextFieldExampleState();
 }
 
-class _TextFieldExampleState extends State<TextFieldExample> {
+class _TextFieldExampleState extends State<Dashboard> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
   final TextEditingController _controller3 = TextEditingController();
@@ -21,7 +21,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   late SharedPreferences _preferences;
   String? _currentAddress;
   Position? _currentPosition;
-
+  int _currentIndex = 0;
   bool _isLoading = false;
 
   @override
@@ -39,13 +39,12 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     _controller4.text = _preferences.getString('text4') ?? '';
     _controller5.text = _preferences.getString('text5') ?? '';
   }
+
   Future<void> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high)
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-          print(position);
       setState(() => _currentPosition = position);
     }).catchError((e) {
       debugPrint(e);
@@ -59,7 +58,8 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location services are disabled. Please enable the services')));
+          content: Text(
+              'Location services are disabled. Please enable the services')));
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -73,11 +73,13 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     }
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
       return false;
     }
     return true;
   }
+
   @override
   void dispose() {
     _controller1.dispose();
@@ -93,28 +95,29 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       _isLoading = true;
     });
 
-    int userId=_preferences.getInt("id")??1;
+    int userId = _preferences.getInt("id") ?? 1;
     // Define API endpoint and request body
     String apiUrl = 'https://teamexapi.zsoftservices.com/api/Account/addvisit';
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    Map<String, dynamic> body = {'DoctorName':'',
+    Map<String, dynamic> body = {
+      'DoctorName': '',
       'HospitalName': '',
-      "Address1":"test",
-      "Address2":"test",
-      "Latitude":_currentPosition!.latitude,
-      "Longitude":_currentPosition!.longitude,
-      "DoctorMobileNo":"test",
-      "HospitalMobileNo":"test",
-      "HospitalLandLine":"test",
-      "Remarks":"test",
-      "Description":"test",
-      "EmployeeId":userId,
+      "Address1": "test",
+      "Address2": "test",
+      "Latitude": _currentPosition!.latitude,
+      "Longitude": _currentPosition!.longitude,
+      "DoctorMobileNo": "test",
+      "HospitalMobileNo": "test",
+      "HospitalLandLine": "test",
+      "Remarks": "test",
+      "Description": "test",
+      "EmployeeId": userId,
     };
 
     // Make API request
     try {
-      var response = await http.post(Uri.parse(apiUrl), headers: headers, body: jsonEncode(body));
-      print(response.body);
+      var response = await http.post(Uri.parse(apiUrl),
+          headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
         // Login successful, navigate to next screen
@@ -124,11 +127,11 @@ class _TextFieldExampleState extends State<TextFieldExample> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Details'),
+            title: const Text('Details'),
             content: const Text('Please make sure fill all the details'),
             actions: [
               TextButton(
-                child: Text('OK'),
+                child: const Text('OK'),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -139,11 +142,11 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('An error occurred. Please try again later.'),
+          title: const Text('Error'),
+          content: const Text('An error occurred. Please try again later.'),
           actions: [
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () => Navigator.pop(context),
             ),
           ],
@@ -156,57 +159,70 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('TextFields Example')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _controller1,
-              decoration: const InputDecoration(labelText: 'Text Field 1'),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _controller2,
-              decoration: const InputDecoration(labelText: 'Text Field 2'),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _controller3,
-              decoration: const InputDecoration(labelText: 'Text Field 3'),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _controller4,
-              decoration: const InputDecoration(labelText: 'Text Field 4'),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _controller5,
-              decoration: const InputDecoration(labelText: 'Text Field 5'),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                _sendDetails();
-                _preferences.setString('text1', _controller1.text);
-                _preferences.setString('text2', _controller2.text);
-                _preferences.setString('text3', _controller3.text);
-                _preferences.setString('text4', _controller4.text);
-                _preferences.setString('text5', _controller5.text);
-
-                // Clear the text fields
-                _controller1.clear();
-              },
-              child: const Text('Submit'),
-            ),
-          ],
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(tabContent[_currentIndex].title),
+          ),
+          body: tabContent[_currentIndex].content,
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index) {
+              setState(
+                () {
+                  _currentIndex = index;
+                },
+              );
+            }, // new
+            currentIndex: _currentIndex, // new
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_comment_outlined),
+                label: 'Add Visit',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.list_alt_outlined),
+                label: 'Visit Details',
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+class TabContent {
+  String title;
+  Widget content;
+
+  TabContent({required this.title, required this.content});
+}
+
+List<TabContent> tabContent = [
+  TabContent(
+    title: 'Add Visit',
+    content: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Add Visit'),
+        ],
+      ),
+    ),
+  ),
+  TabContent(
+    title: 'Visit Details',
+    content: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Visit Details'),
+        ],
+      ),
+    ),
+  )
+];

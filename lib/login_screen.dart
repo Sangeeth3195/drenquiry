@@ -44,9 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
           headers: headers, body: jsonEncode(body));
 
       if (response.statusCode == 200) {
-        var data=json.decode(response.body);
-        _preferences.setInt('id',data['result']['id'] );
-        // Login successful, navigate to next screen
+        var data = json.decode(response.body);
+        _preferences.setInt('id', data['result']['id']);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -102,32 +101,48 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _usernameController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(labelText: 'Phone Number'),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 16.0),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _login,
-                    child: const Text('Login'),
+        body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              children: <Widget>[
+                const SizedBox(height: 150.0),
+                Image.asset('assets/star.png', height: 150, width: 150),
+                const SizedBox(height: 50.0),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'User Name',
+                    ),
                   ),
-          ],
-        ),
-      ),
-    );
+                ),
+                const SizedBox(height: 16.0),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: TextField(
+                    obscureText: true,
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Password',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : Container(
+                        height: 45,
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: ElevatedButton(
+                          child: const Text('Login'),
+                          onPressed: () {
+                            _login();
+                          },
+                        )),
+              ],
+            )));
   }
 }

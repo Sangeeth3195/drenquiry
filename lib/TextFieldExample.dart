@@ -93,8 +93,6 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       _isLoading = true;
     });
 
-
-
     int userId=_preferences.getInt("id")??1;
     // Define API endpoint and request body
     String apiUrl = 'https://teamexapi.zsoftservices.com/api/Account/addvisit';

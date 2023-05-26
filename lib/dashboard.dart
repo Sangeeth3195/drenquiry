@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dr_enquiry/UserListScreen.dart';
+import 'package:dr_enquiry/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -170,6 +171,14 @@ class _TextFieldExampleState extends State<Dashboard> {
         child: Scaffold(
           appBar: AppBar(
             title: Text(tabContent[_currentIndex].title),
+            actions: [
+              IconButton(onPressed: () async{
+                 SharedPreferences _preferences=     await SharedPreferences.getInstance();
+                 _preferences.clear();
+                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                     LoginScreen()), (Route<dynamic> route) => false);
+                 }, icon: Icon(Icons.add))
+            ],
           ),
           body: tabContent[_currentIndex].content,
           bottomNavigationBar: BottomNavigationBar(

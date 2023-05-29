@@ -17,7 +17,7 @@ class SplashScreenState extends State<SplashScreen> {
     Timer(
         const Duration(seconds: 2),
         () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const Dashboard())));
+            MaterialPageRoute(builder: (context) => const LoginScreen())));
   }
 
   @override
@@ -40,22 +40,9 @@ class SplashScreenState extends State<SplashScreen> {
                     Image.asset('assets/star.png',
                         height: 180,
                         width: 180),
-                    // const Text(
-                    //   'A tablet is a wireless touch screen computer that is smaller than a notebook but larger than a smartphone.',
-                    //   style: TextStyle(fontSize: 20.0),
-                    // )
                   ],
                 ),
               ),
-              // Expanded(
-              //   flex: 1,
-              // child: Column(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     CircularProgressIndicator.adaptive(value: 3.0,),
-              //     Padding(padding: const EdgeInsets.only(top: 20.0))
-              //   ],
-              // ),)
             ],
           )
         ],

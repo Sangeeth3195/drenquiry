@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TextFieldExample extends StatefulWidget {
   const TextFieldExample({super.key});
@@ -18,6 +19,10 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   final TextEditingController _controller3 = TextEditingController();
   final TextEditingController _controller4 = TextEditingController();
   final TextEditingController _controller5 = TextEditingController();
+  final TextEditingController _controller6 = TextEditingController();
+  final TextEditingController _controller7 = TextEditingController();
+  final TextEditingController _controller8 = TextEditingController();
+  final TextEditingController _controller9 = TextEditingController();
   late SharedPreferences _preferences;
   String? _currentAddress;
   Position? _currentPosition;
@@ -39,13 +44,13 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     _controller4.text = _preferences.getString('text4') ?? '';
     _controller5.text = _preferences.getString('text5') ?? '';
   }
+
   Future<void> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
     if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high)
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
-          print(position);
+      print(position);
       setState(() => _currentPosition = position);
     }).catchError((e) {
       debugPrint(e);
@@ -59,7 +64,8 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location services are disabled. Please enable the services')));
+          content: Text(
+              'Location services are disabled. Please enable the services')));
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -73,11 +79,13 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     }
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
       return false;
     }
     return true;
   }
+
   @override
   void dispose() {
     _controller1.dispose();
@@ -85,70 +93,71 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     _controller3.dispose();
     _controller4.dispose();
     _controller5.dispose();
+    _controller6.dispose();
+    _controller7.dispose();
+    _controller8.dispose();
+    _controller9.dispose();
     super.dispose();
   }
 
   Future<void> _sendDetails() async {
+    print("lat --> ${_currentPosition!.latitude}");
+    print("lon --> ${_currentPosition!.longitude}");
+
     setState(() {
       _isLoading = true;
     });
+    int userId = _preferences.getInt("id") ?? 1;
 
-    int userId=_preferences.getInt("id")??1;
-    // Define API endpoint and request body
     String apiUrl = 'https://teamexapi.zsoftservices.com/api/Account/addvisit';
+
     Map<String, String> headers = {'Content-Type': 'application/json'};
-    Map<String, dynamic> body = {'DoctorName':'',
-      'HospitalName': '',
-      "Address1":"test",
-      "Address2":"test",
-      "Latitude":_currentPosition!.latitude,
-      "Longitude":_currentPosition!.longitude,
-      "DoctorMobileNo":"test",
-      "HospitalMobileNo":"test",
-      "HospitalLandLine":"test",
-      "Remarks":"test",
-      "Description":"test",
-      "EmployeeId":userId,
+
+    print(_controller1);
+
+    Map<String, dynamic> body = {
+      'DoctorName': _controller1.text,
+      'HospitalName': _controller2.text,
+      "Address1": _controller3.text,
+      "Address2": _controller4.text,
+      "Latitude": _currentPosition!.latitude,
+      "Longitude": _currentPosition!.longitude,
+      "DoctorMobileNo": _controller5.text,
+      "HospitalMobileNo": _controller6.text,
+      "HospitalLandLine": _controller7.text,
+      "Remarks": _controller9.text,
+      "Description": _controller8.text,
+      "EmployeeId": userId,
     };
+
+    print(body);
 
     // Make API request
     try {
-      var response = await http.post(Uri.parse(apiUrl), headers: headers, body: jsonEncode(body));
+      var response = await http.post(Uri.parse(apiUrl),
+          headers: headers, body: jsonEncode(body));
       print(response.body);
 
       if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: "This is Center Short Toast",
+        );
+        _controller1.clear();
+        _controller2.clear();
+        _controller3.clear();
+        _controller4.clear();
+        _controller5.clear();
+        _controller6.clear();
+        _controller7.clear();
+        _controller8.clear();
+        _controller9.clear();
         // Login successful, navigate to next screen
         // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TextFieldExample()));
       } else {
         // Login failed, display error message
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Details'),
-            content: const Text('Please make sure fill all the details'),
-            actions: [
-              TextButton(
-                child: Text('OK'),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-        );
       }
     } catch (error) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Error'),
-          content: Text('An error occurred. Please try again later.'),
-          actions: [
-            TextButton(
-              child: Text('OK'),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      );
+      print(error.toString());
     }
 
     setState(() {
@@ -156,51 +165,99 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: const Text('TextFields Example')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             TextFormField(
               controller: _controller1,
-              decoration: const InputDecoration(labelText: 'Text Field 1'),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Doctor Name',
+              ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 10.0),
             TextFormField(
               controller: _controller2,
-              decoration: const InputDecoration(labelText: 'Text Field 2'),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Hospital Name',
+              ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 10.0),
             TextFormField(
               controller: _controller3,
-              decoration: const InputDecoration(labelText: 'Text Field 3'),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Address 1',
+              ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 10.0),
             TextFormField(
               controller: _controller4,
-              decoration: const InputDecoration(labelText: 'Text Field 4'),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Address 2',
+              ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 10.0),
             TextFormField(
               controller: _controller5,
-              decoration: const InputDecoration(labelText: 'Text Field 5'),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Doctor Mobile No',
+              ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: _controller6,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Hospital Mobile No',
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: _controller6,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Hospital Landline No',
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: _controller7,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Description',
+              ),
+            ),
+            const SizedBox(height: 10.0),
+            TextFormField(
+              controller: _controller8,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Remarks',
+              ),
+            ),
+            const SizedBox(height: 10.0),
             ElevatedButton(
               onPressed: () {
                 _sendDetails();
-                _preferences.setString('text1', _controller1.text);
-                _preferences.setString('text2', _controller2.text);
-                _preferences.setString('text3', _controller3.text);
-                _preferences.setString('text4', _controller4.text);
-                _preferences.setString('text5', _controller5.text);
-
-                // Clear the text fields
-                _controller1.clear();
+                _preferences.setString('Doctor Name', _controller1.text);
+                _preferences.setString('Hospital Name', _controller2.text);
+                _preferences.setString('Address 1', _controller3.text);
+                _preferences.setString('Address 2', _controller4.text);
+                _preferences.setString('Doctor Mobile No', _controller5.text);
+                _preferences.setString('Hospital Mobile No', _controller6.text);
+                _preferences.setString(
+                    'Hospital Landline No', _controller9.text);
+                _preferences.setString('Description', _controller7.text);
+                _preferences.setString('Remarks', _controller8.text);
               },
               child: const Text('Submit'),
             ),

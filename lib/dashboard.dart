@@ -166,6 +166,10 @@ class _TextFieldExampleState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner:false,
+      theme: ThemeData(
+        primarySwatch: Colors.yellow,
+      ),
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -176,8 +180,8 @@ class _TextFieldExampleState extends State<Dashboard> {
                  SharedPreferences _preferences=     await SharedPreferences.getInstance();
                  _preferences.clear();
                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                     LoginScreen()), (Route<dynamic> route) => false);
-                 }, icon: Icon(Icons.add))
+                     const LoginScreen()), (Route<dynamic> route) => false);
+                 }, icon: const Icon(Icons.login_outlined))
             ],
           ),
           body: tabContent[_currentIndex].content,
@@ -217,7 +221,7 @@ class TabContent {
 List<TabContent> tabContent = [
   TabContent(
     title: 'Add Visit',
-    content: TextFieldExample(),
+    content: const TextFieldExample(),
   ),
   TabContent(
     title: 'Visit Details',

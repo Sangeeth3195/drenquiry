@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dr_enquiry/TextFieldExample.dart';
+import 'package:dr_enquiry/dashboard.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -49,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => const TextFieldExample()));
+                builder: (BuildContext context) => const Dashboard()));
       } else {
         // Login failed, display error message
         showDialog(

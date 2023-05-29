@@ -29,11 +29,10 @@ class _UserListScreenState extends State<UserListScreen> {
     int userId = _preferences.getInt("id") ?? 1;
     // Define API endpoint and request body
     String apiUrl =
-        'https://teamexapi.zsoftservices.com/api/customer/get_service_list';
+        'https://teamexapi.zsoftservices.com/api/Account/getvisitDetails';
     Map<String, String> headers = {'Content-Type': 'application/json'};
     Map<String, dynamic> body = {
-      'DoctorName': '',
-      "customer_id": userId,
+      "EmployeeId": userId,
     };
 
     // Make API request
@@ -43,7 +42,7 @@ class _UserListScreenState extends State<UserListScreen> {
       print(response.body);
 
       serviceList = ServiceList.fromJson(jsonDecode(response.body));
-      print(serviceList.count);
+
     } catch (error) {
       print(error);
     }
@@ -68,53 +67,44 @@ class _UserListScreenState extends State<UserListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: serviceList.result == null
-          ? Center(child: const CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: serviceList.result!.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text(serviceList.result![index].customerName ?? ''),
+                    // leading: const Icon(Icons.person),
+                    title: Text("Doc Name : ${serviceList.result![index].doctorName}" ?? ''),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Total : " +
-                                serviceList.result![index].total.toString() ??
+                        Text("Hospital Name : ${serviceList.result![index].hospitalName}" ??
                             ''),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Sub Total : " +
-                                serviceList.result![index].subTotal
-                                    .toString() ??
+                        Text("Address 1 : ${serviceList.result![index].address1}" ??
                             ''),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Mobile Number : " +
-                                serviceList.result![index].phoneNumber
-                                    .toString() ??
+                        Text("Address 2 : ${serviceList.result![index].address2}" ??
                             ''),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Address : " +
-                                serviceList.result![index].address
-                                    .toString() ??
+                        Text("Doc Mob No : ${serviceList.result![index].doctorMobileNo}" ??
                             ''),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Booking Date : " +
-                                serviceList.result![index].bookingDate
-                                    .toString() ??
+                        Text("Hosp Mob No : ${serviceList.result![index].hospitalMobileNo}" ??
                             ''),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
                       ],

@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final serviceList = serviceListFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -10,132 +7,135 @@ String serviceListToJson(ServiceList data) => json.encode(data.toJson());
 
 class ServiceList {
   List<Result>? result;
-  int? count;
   String? message;
   int? status;
 
-  ServiceList({
-    this.result,
-    this.count,
-    this.message,
-    this.status,
-  });
+  ServiceList({this.result, this.message, this.status});
 
-  factory ServiceList.fromJson(Map<String, dynamic> json) => ServiceList(
-    result: List<Result>.from(json["result"].map((x) => Result.fromJson(x))),
-    count: json["count"],
-    message: json["message"],
-    status: json["status"],
-  );
+  ServiceList.fromJson(Map<String, dynamic> json) {
+    if (json['result'] != null) {
+      result = <Result>[];
+      json['result'].forEach((v) {
+        result!.add(new Result.fromJson(v));
+      });
+    }
+    message = json['message'];
+    status = json['status'];
+  }
 
-  Map<String, dynamic> toJson() => {
-    "result": List<dynamic>.from(result!.map((x) => x.toJson())),
-    "count": count,
-    "message": message,
-    "status": status,
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.result != null) {
+      data['result'] = this.result!.map((v) => v.toJson()).toList();
+    }
+    data['message'] = this.message;
+    data['status'] = this.status;
+    return data;
+  }
 }
 
 class Result {
-  DateTime? bookingDate;
-  String? bookingTime;
-  String? lat;
-  String? lng;
-  String? items;
-  int? id;
-  int? paymentMode;
-  String? address;
-  double? total;
-  double? discount;
-  String? tax;
-  double? subTotal;
-  String? status;
-  String? statusType;
-  String? slug;
-  String? paymentName;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  int? customerId;
-  String? phoneNumber;
-  String? phoneWithCode;
-  String? customerName;
-  int? statusId;
+  int? transVisitId;
+  int? recNo;
+  String? recDate;
+  String? doctorName;
+  String? hospitalName;
+  String? address1;
+  String? address2;
+  String? latitude;
+  String? longitude;
+  String? doctorMobileNo;
+  String? hospitalMobileNo;
+  String? hospitalLandline;
+  String? remarks;
+  String? description;
+  int? employeeId;
+  Null? companyId;
+  Null? branchId;
+  Null? noEdit;
+  String? createdDate;
+  String? modifiedDate;
+  Null? createdBy;
+  Null? modifiedBy;
+  bool? cancelled;
 
-  Result({
-    this.bookingDate,
-    this.bookingTime,
-    this.lat,
-    this.lng,
-    this.items,
-    this.id,
-    this.paymentMode,
-    this.address,
-    this.total,
-    this.discount,
-    this.tax,
-    this.subTotal,
-    this.status,
-    this.statusType,
-    this.slug,
-    this.paymentName,
-    this.createdAt,
-    this.updatedAt,
-    this.customerId,
-    this.phoneNumber,
-    this.phoneWithCode,
-    this.customerName,
-    this.statusId,
-  });
+  Result(
+      {this.transVisitId,
+        this.recNo,
+        this.recDate,
+        this.doctorName,
+        this.hospitalName,
+        this.address1,
+        this.address2,
+        this.latitude,
+        this.longitude,
+        this.doctorMobileNo,
+        this.hospitalMobileNo,
+        this.hospitalLandline,
+        this.remarks,
+        this.description,
+        this.employeeId,
+        this.companyId,
+        this.branchId,
+        this.noEdit,
+        this.createdDate,
+        this.modifiedDate,
+        this.createdBy,
+        this.modifiedBy,
+        this.cancelled});
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-    bookingDate: DateTime.parse(json["booking_Date"]),
-    bookingTime: json["booking_Time"],
-    lat: json["lat"],
-    lng: json["lng"],
-    items: json["items"],
-    id: json["id"],
-    paymentMode: json["payment_Mode"],
-    address: json["address"],
-    total: json["total"].toDouble(),
-    discount: json["discount"].toDouble(),
-    tax: json["tax"],
-    subTotal: json["sub_Total"].toDouble(),
-    status: json["status"],
-    statusType: json["status_type"],
-    slug: json["slug"],
-    paymentName: json["payment_name"],
-    createdAt: DateTime.parse(json["created_At"]),
-    updatedAt: DateTime.parse(json["updated_At"]),
-    customerId: json["customer_Id"],
-    phoneNumber: json["phone_number"],
-    phoneWithCode: json["phone_With_Code"],
-    customerName: json["customer_Name"],
-    statusId: json["status_id"],
-  );
+  Result.fromJson(Map<String, dynamic> json) {
+    transVisitId = json['transVisitId'];
+    recNo = json['recNo'];
+    recDate = json['recDate'];
+    doctorName = json['doctorName'];
+    hospitalName = json['hospitalName'];
+    address1 = json['address1'];
+    address2 = json['address2'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    doctorMobileNo = json['doctorMobileNo'];
+    hospitalMobileNo = json['hospitalMobileNo'];
+    hospitalLandline = json['hospitalLandline'];
+    remarks = json['remarks'];
+    description = json['description'];
+    employeeId = json['employeeId'];
+    companyId = json['companyId'];
+    branchId = json['branchId'];
+    noEdit = json['noEdit'];
+    createdDate = json['createdDate'];
+    modifiedDate = json['modifiedDate'];
+    createdBy = json['createdBy'];
+    modifiedBy = json['modifiedBy'];
+    cancelled = json['cancelled'];
+  }
 
-  Map<String, dynamic> toJson() => {
-    "booking_Date": bookingDate!.toIso8601String(),
-    "booking_Time": bookingTime,
-    "lat": lat,
-    "lng": lng,
-    "items": items,
-    "id": id,
-    "payment_Mode": paymentMode,
-    "address": address,
-    "total": total,
-    "discount": discount,
-    "tax": tax,
-    "sub_Total": subTotal,
-    "status": status,
-    "status_type": statusType,
-    "slug": slug,
-    "payment_name": paymentName,
-    "created_At": createdAt!.toIso8601String(),
-    "updated_At": updatedAt!.toIso8601String(),
-    "customer_Id": customerId,
-    "phone_number": phoneNumber,
-    "phone_With_Code": phoneWithCode,
-    "customer_Name": customerName,
-    "status_id": statusId,
-  };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['transVisitId'] = this.transVisitId;
+    data['recNo'] = this.recNo;
+    data['recDate'] = this.recDate;
+    data['doctorName'] = this.doctorName;
+    data['hospitalName'] = this.hospitalName;
+    data['address1'] = this.address1;
+    data['address2'] = this.address2;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['doctorMobileNo'] = this.doctorMobileNo;
+    data['hospitalMobileNo'] = this.hospitalMobileNo;
+    data['hospitalLandline'] = this.hospitalLandline;
+    data['remarks'] = this.remarks;
+    data['description'] = this.description;
+    data['employeeId'] = this.employeeId;
+    data['companyId'] = this.companyId;
+    data['branchId'] = this.branchId;
+    data['noEdit'] = this.noEdit;
+    data['createdDate'] = this.createdDate;
+    data['modifiedDate'] = this.modifiedDate;
+    data['createdBy'] = this.createdBy;
+    data['modifiedBy'] = this.modifiedBy;
+    data['cancelled'] = this.cancelled;
+    return data;
+  }
 }
+

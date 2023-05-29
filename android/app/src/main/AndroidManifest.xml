@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
-        android:label="dr_enquiry"
+        android:label="Dr Enquiry"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

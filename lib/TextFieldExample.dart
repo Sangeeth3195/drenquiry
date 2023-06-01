@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 
 class TextFieldExample extends StatefulWidget {
   const TextFieldExample({super.key});
@@ -109,7 +108,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
     });
     int userId = _preferences.getInt("id") ?? 1;
 
-    String apiUrl = 'https://teamexapi.zsoftservices.com/api/Account/addvisit';
+    String apiUrl = 'https://star.zsoftservices.com/api/AppAPI/addvisit';
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
 
@@ -139,9 +138,9 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       print(response.body);
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-          msg: "This is Center Short Toast",
-        );
+        // Fluttertoast.showToast(
+        //   msg: "This is Center Short Toast",
+        // );
         _controller1.clear();
         _controller2.clear();
         _controller3.clear();

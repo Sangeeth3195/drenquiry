@@ -31,12 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
     String password = _passwordController.text;
 
     // Define API endpoint and request body
-    String apiUrl = 'https://teamexapi.zsoftservices.com/api/customer/login';
+    String apiUrl = 'https://star.zsoftservices.com/api/AppAPI/login';
     Map<String, String> headers = {'Content-Type': 'application/json'};
     Map<String, String> body = {
-      'phone_with_code': '+91$username',
-      'password': password,
-      "fcm_token": "test"
+      'Email': username,
+      'Password': password,
     };
 
     // Make API request
@@ -46,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
-        _preferences.setInt('id', data['result']['id']);
+        _preferences.setInt('id', data['result']['employeeId']);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -94,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     if (kDebugMode) {
-      _usernameController.text = '8344716194';
+      _usernameController.text = 'sangeethdar@gmail.com';
       _passwordController.text = '123';
     }
   }

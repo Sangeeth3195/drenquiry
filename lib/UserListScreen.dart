@@ -29,7 +29,7 @@ class _UserListScreenState extends State<UserListScreen> {
     int userId = _preferences.getInt("id") ?? 1;
     // Define API endpoint and request body
     String apiUrl =
-        'https://teamexapi.zsoftservices.com/api/Account/getvisitDetails';
+        'https://star.zsoftservices.com/api/AppAPI/getvisitDetails';
     Map<String, String> headers = {'Content-Type': 'application/json'};
     Map<String, dynamic> body = {
       "EmployeeId": userId,

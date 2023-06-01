@@ -27,6 +27,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
   Position? _currentPosition;
 
   bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -170,97 +171,162 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       // appBar: AppBar(title: const Text('TextFields Example')),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _controller1,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Doctor Name',
-              ),
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _controller1,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Doctor name';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Doctor Name',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  controller: _controller2,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Hospital name';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Hospital Name',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Address';
+                    }
+                    return null;
+                  },
+                  controller: _controller3,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Address 1',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Address 2';
+                    }
+                    return null;
+                  },
+                  controller: _controller4,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Address 2',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Doctor Mobile No';
+                    }
+                    return null;
+                  },
+                  controller: _controller5,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Doctor Mobile No',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Hospital Mobile No';
+                    }
+                    return null;
+                  },
+                  controller: _controller6,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Hospital Mobile No',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Hospital Landline No';
+                    }
+                    return null;
+                  },
+                  controller: _controller6,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Hospital Landline No',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Description';
+                    }
+                    return null;
+                  },
+                  controller: _controller7,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Description',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter Remarks';
+                    }
+                    return null;
+                  },
+                  controller: _controller8,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Remarks',
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                ElevatedButton(
+                  onPressed: () {
+                    if(_formKey.currentState!.validate()){
+                      _sendDetails();
+                      _preferences.setString('Doctor Name', _controller1.text);
+                      _preferences.setString('Hospital Name', _controller2.text);
+                      _preferences.setString('Address 1', _controller3.text);
+                      _preferences.setString('Address 2', _controller4.text);
+                      _preferences.setString('Doctor Mobile No', _controller5.text);
+                      _preferences.setString('Hospital Mobile No', _controller6.text);
+                      _preferences.setString(
+                          'Hospital Landline No', _controller9.text);
+                      _preferences.setString('Description', _controller7.text);
+                      _preferences.setString('Remarks', _controller8.text);
+                    }
+
+                  },
+                  child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(child: const Text('Submit'))),
+                ),
+              ],
             ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller2,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Hospital Name',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller3,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Address 1',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller4,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Address 2',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller5,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Doctor Mobile No',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller6,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Hospital Mobile No',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller6,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Hospital Landline No',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller7,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Description',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller8,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Remarks',
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            ElevatedButton(
-              onPressed: () {
-                _sendDetails();
-                _preferences.setString('Doctor Name', _controller1.text);
-                _preferences.setString('Hospital Name', _controller2.text);
-                _preferences.setString('Address 1', _controller3.text);
-                _preferences.setString('Address 2', _controller4.text);
-                _preferences.setString('Doctor Mobile No', _controller5.text);
-                _preferences.setString('Hospital Mobile No', _controller6.text);
-                _preferences.setString(
-                    'Hospital Landline No', _controller9.text);
-                _preferences.setString('Description', _controller7.text);
-                _preferences.setString('Remarks', _controller8.text);
-              },
-              child: const Text('Submit'),
-            ),
-          ],
+          ),
         ),
       ),
     );

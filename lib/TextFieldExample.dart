@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -120,8 +121,8 @@ class _TextFieldExampleState extends State<TextFieldExample> {
       'HospitalName': _controller2.text,
       "Address1": _controller3.text,
       "Address2": _controller4.text,
-      "Latitude": _currentPosition!.latitude,
-      "Longitude": _currentPosition!.longitude,
+      "Latitude": _currentPosition!.latitude.toString(),
+      "Longitude": _currentPosition!.longitude.toString(),
       "DoctorMobileNo": _controller5.text,
       "HospitalMobileNo": _controller6.text,
       "HospitalLandLine": _controller7.text,
@@ -241,6 +242,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                     return null;
                   },
                   controller: _controller5,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Doctor Mobile No',
@@ -248,12 +250,14 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                  validator: (value) {
+                  /*validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Hospital Mobile No';
                     }
                     return null;
-                  },
+                  },*/
+                  keyboardType: TextInputType.number,
+
                   controller: _controller6,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -262,13 +266,18 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                  validator: (value) {
+                 /* validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Hospital Landline No';
                     }
                     return null;
-                  },
+                  },*/
                   controller: _controller6,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  keyboardType: TextInputType.number,
+
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Hospital Landline No',
@@ -290,12 +299,12 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                  validator: (value) {
+                  /*validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Remarks';
                     }
                     return null;
-                  },
+                  },*/
                   controller: _controller8,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),

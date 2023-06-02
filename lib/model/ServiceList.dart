@@ -50,13 +50,13 @@ class Result {
   String? remarks;
   String? description;
   int? employeeId;
-  Null? companyId;
-  Null? branchId;
-  Null? noEdit;
+  int? companyId;
+  int? branchId;
+  bool? noEdit;
   String? createdDate;
   String? modifiedDate;
-  Null? createdBy;
-  Null? modifiedBy;
+  int? createdBy;
+  String? modifiedBy;
   bool? cancelled;
 
   Result(

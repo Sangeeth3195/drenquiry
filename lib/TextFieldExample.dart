@@ -179,6 +179,7 @@ class _TextFieldExampleState extends State<TextFieldExample> {
               children: [
                 TextFormField(
                   controller: _controller1,
+                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Doctor name';
@@ -192,6 +193,8 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
+
                   controller: _controller2,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -214,13 +217,17 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                     return null;
                   },
                   controller: _controller3,
+                  textInputAction: TextInputAction.next,
+
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Address 1',
+                    labelText: 'Address ',
                   ),
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
+
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Address 2';
@@ -230,17 +237,24 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                   controller: _controller4,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Address 2',
+                    labelText: 'Location',
                   ),
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
+
+                  maxLength: 10,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                    RegExp regExp = new RegExp(pattern);
+                    if (value!.length == 0) {
                       return 'Please enter Doctor Mobile No';
                     }
-                    return null;
-                  },
+                    else if (!regExp.hasMatch(value)) {
+                      return 'Please enter valid Doctor Mobile No';
+                    }
+                    return null;                  },
                   controller: _controller5,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
@@ -250,6 +264,8 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
+
                   /*validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Hospital Mobile No';
@@ -257,7 +273,17 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                     return null;
                   },*/
                   keyboardType: TextInputType.number,
-
+                  maxLength: 10,
+                  validator: (value) {
+                    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                    RegExp regExp = new RegExp(pattern);
+                    if (value!.length == 0) {
+                      return 'Please enter Hospital Mobile No';
+                    }
+                    else if (!regExp.hasMatch(value)) {
+                      return 'Please enter valid Hospital Mobile No';
+                    }
+                    return null;                  },
                   controller: _controller6,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -266,13 +292,15 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
-                 /* validator: (value) {
+                  textInputAction: TextInputAction.next,
+
+                  /* validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Hospital Landline No';
                     }
                     return null;
                   },*/
-                  controller: _controller6,
+                  controller: _controller7,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly
                   ],
@@ -285,13 +313,15 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
+
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Description';
                     }
                     return null;
                   },
-                  controller: _controller7,
+                  controller: _controller8,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Description',
@@ -299,13 +329,15 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  textInputAction: TextInputAction.next,
+
                   /*validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Remarks';
                     }
                     return null;
                   },*/
-                  controller: _controller8,
+                  controller: _controller9,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Remarks',
@@ -315,7 +347,16 @@ class _TextFieldExampleState extends State<TextFieldExample> {
                 ElevatedButton(
                   onPressed: () {
                     if(_formKey.currentState!.validate()){
-                      _sendDetails();
+                      if(_currentPosition ==null){
+                        final snackBar = SnackBar(
+                          content: const Text('Please Enable Location To continue'),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                      }else{
+                        _sendDetails();
+
+                      }
                       _preferences.setString('Doctor Name', _controller1.text);
                       _preferences.setString('Hospital Name', _controller2.text);
                       _preferences.setString('Address 1', _controller3.text);
